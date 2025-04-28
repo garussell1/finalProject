@@ -1,21 +1,4 @@
 import sys
-
-dfaFile1 = sys.argv[1]
-dfaFile2 = sys.argv[2]
-
-# file format:
-# alphabet (separated by spaces)
-# state names (separated by spaces)
-# accepting states (separated by spaces)
-# input outputting state (in pairs, separated by spaces. same order as states specified)
-# example files are attached
-# EX:
-# 0 1
-# S1 S2
-# S1
-# 0 S1 1 S2 (this would map to S1)
-# 0 S2 1 S1 (this would map to S2)
-
 dfaFile1 = sys.argv[1]
 dfaFile2 = sys.argv[2]
 
