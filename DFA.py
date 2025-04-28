@@ -21,61 +21,75 @@ dfaFile2 = sys.argv[2]
 # 0 S2 1 S1 (this would map to S2)
 
 dfa1 = {}
-with open(dfaFile1) as f:
-    alphabetLine = f.readline()
-    alphabet = alphabetLine.split()
-    states = f.readline()
-    statesList = states.split()
-    stateNames = statesList.copy()
-    acceptingState1 = f.readline()
-    accepts1 = acceptingState1.split()
-    for x in range(0, len(statesList)):
-        line = f.readline()
-        currentState = line.split()
-        statesList[x] = {}
-        if len(currentState) % 2 != 0:
-            print("ERROR! States are declared incorrectly for", dfaFile1, ". Please check comments for correct formatting.")
-            sys.exit()
-        for y in range(0, len(currentState),2):
-                if currentState[y] not in alphabet:
-                     print("ERROR!", currentState[y], "is not part of the specified alphabet. Please edit file ", dfaFile1, " for adjustments.")
-                     sys.exit()
-                if currentState[(y+1)] not in stateNames:
-                     print("ERROR!", currentState[y+1], "is not part of the specified states. Please edit file ", dfaFile1, " for adjustments.")
-                     sys.exit()
-                statesList[x][currentState[y]] = currentState[(y + 1)]
-        dfa1[stateNames[x]] = statesList[x]
+try:
+    with open(dfaFile1) as f:
+        alphabetLine = f.readline()
+        alphabet = alphabetLine.split()
+        states = f.readline()
+        statesList = states.split()
+        stateNames = statesList.copy()
+        acceptingState1 = f.readline()
+        accepts1 = acceptingState1.split()
+        for x in range(0, len(statesList)):
+            line = f.readline()
+            currentState = line.split()
+            statesList[x] = {}
+            if len(currentState) % 2 != 0:
+                print("ERROR! States are declared incorrectly for", dfaFile1, ". Please check comments for correct formatting.")
+                sys.exit()
+            for y in range(0, len(currentState),2):
+                    if currentState[y] not in alphabet:
+                        print("ERROR!", currentState[y], "is not part of the specified alphabet. Please edit file ", dfaFile1, " for adjustments.")
+                        sys.exit()
+                    if currentState[(y+1)] not in stateNames:
+                        print("ERROR!", currentState[y+1], "is not part of the specified states. Please edit file ", dfaFile1, " for adjustments.")
+                        sys.exit()
+                    statesList[x][currentState[y]] = currentState[(y + 1)]
+            dfa1[stateNames[x]] = statesList[x]
+except FileNotFoundError:
+    print("ERROR! Could not open file:", dfaFile1)
+    sys.exit()
+except IOError:
+    print("ERROR! An I/O error occurred while opening file:", dfaFile1)
+    sys.exit()
 
 
 
 
 
 dfa2 = {}
-with open(dfaFile2) as f:
-    alphabetLine2 = f.readline()
-    alphabet2 = alphabetLine2.split()
-    states2 = f.readline()
-    statesList2 = states2.split()
-    stateNames2 = statesList2.copy()
-    acceptingState2 = f.readline()
-    accepts2 = acceptingState2.split()
-    for x in range(0, len(statesList2)):
-        line = f.readline()
-        currentState2 = line.split()
-        # make a dictionary for each state first
-        statesList2[x] = {}
-        if len(currentState2) % 2 != 0:
-            print("ERROR! States are declared incorrectly for", dfaFile2, ". Please check comments for correct formatting.")
-            sys.exit()
-        for y in range(0, len(currentState2),2):
-                if currentState2[y] not in alphabet2:
-                     print("ERROR!", currentState2[y], "is not part of the specified alphabet. Please edit file ", dfaFile2, " for adjustments.")
-                     sys.exit()
-                if currentState2[(y+1)] not in stateNames2:
-                     print("ERROR!", currentState2[y+1], "is not part of the specified states. Please edit file ", dfaFile2, " for adjustments.")
-                     sys.exit()
-                statesList2[x][currentState2[y]] = currentState2[(y + 1)]
-        dfa2[stateNames2[x]] = statesList2[x]
+try:
+    with open(dfaFile2) as f:
+        alphabetLine2 = f.readline()
+        alphabet2 = alphabetLine2.split()
+        states2 = f.readline()
+        statesList2 = states2.split()
+        stateNames2 = statesList2.copy()
+        acceptingState2 = f.readline()
+        accepts2 = acceptingState2.split()
+        for x in range(0, len(statesList2)):
+            line = f.readline()
+            currentState2 = line.split()
+            # make a dictionary for each state first
+            statesList2[x] = {}
+            if len(currentState2) % 2 != 0:
+                print("ERROR! States are declared incorrectly for", dfaFile2, ". Please check comments for correct formatting.")
+                sys.exit()
+            for y in range(0, len(currentState2),2):
+                    if currentState2[y] not in alphabet2:
+                        print("ERROR!", currentState2[y], "is not part of the specified alphabet. Please edit file ", dfaFile2, " for adjustments.")
+                        sys.exit()
+                    if currentState2[(y+1)] not in stateNames2:
+                        print("ERROR!", currentState2[y+1], "is not part of the specified states. Please edit file ", dfaFile2, " for adjustments.")
+                        sys.exit()
+                    statesList2[x][currentState2[y]] = currentState2[(y + 1)]
+            dfa2[stateNames2[x]] = statesList2[x]
+except FileNotFoundError:
+    print("ERROR! Could not open file:", dfaFile2)
+    sys.exit()
+except IOError:
+    print("ERROR! An I/O error occurred while opening file:", dfaFile2)
+    sys.exit()
 
 print("DFA1:")
 print(dfa1)
