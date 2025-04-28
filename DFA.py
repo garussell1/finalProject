@@ -1,4 +1,9 @@
 import sys
+
+if len(sys.argv) != 3:
+    print ("Incorrect usage. Please specify two files in command line. Ex: python DFA.py file1.txt file2.txt")
+    sys.exit()
+
 dfaFile1 = sys.argv[1]
 dfaFile2 = sys.argv[2]
 
