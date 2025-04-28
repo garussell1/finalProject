@@ -1,9 +1,4 @@
 import sys
-
-if len(sys.argv) != 3:
-    print ("Incorrect usage. Please specify two files in command line. Ex: python DFA.py file1.txt file2.txt")
-    sys.exit()
-
 dfaFile1 = sys.argv[1]
 dfaFile2 = sys.argv[2]
 
@@ -20,62 +15,91 @@ dfaFile2 = sys.argv[2]
 # 0 S1 1 S2 (this would map to S1)
 # 0 S2 1 S1 (this would map to S2)
 
+
 dfa1 = {}
-with open(dfaFile1) as f:
-    alphabetLine = f.readline()
-    alphabet = alphabetLine.split()
-    states = f.readline()
-    statesList = states.split()
-    stateNames = statesList.copy()
-    acceptingState1 = f.readline()
-    accepts1 = acceptingState1.split()
-    for x in range(0, len(statesList)):
-        line = f.readline()
-        currentState = line.split()
-        statesList[x] = {}
-        if len(currentState) % 2 != 0:
-            print("ERROR! States are declared incorrectly for", dfaFile1, ". Please check comments for correct formatting.")
+
+try:
+    with open(dfaFile1) as f:
+        alphabetLine = f.readline()
+        alphabet = alphabetLine.split()
+        states = f.readline()
+        statesList = states.split()
+        stateNames = statesList.copy()
+        acceptingState1 = f.readline()
+        accepts1 = acceptingState1.split()
+        
+        if not statesList:
+            print("ERROR! No states found in", dfaFile1, ". Please check the DFA file format.")
             sys.exit()
-        for y in range(0, len(currentState),2):
+        
+        for x in range(0, len(statesList)):
+            line = f.readline()
+            currentState = line.split()
+            statesList[x] = {}
+            if len(currentState) % 2 != 0:
+                print("ERROR! States are declared incorrectly for", dfaFile1, ". Please check comments for correct formatting.")
+                sys.exit()
+            for y in range(0, len(currentState), 2):
                 if currentState[y] not in alphabet:
-                     print("ERROR!", currentState[y], "is not part of the specified alphabet. Please edit file ", dfaFile1, " for adjustments.")
-                     sys.exit()
+                    print("ERROR!", currentState[y], "is not part of the specified alphabet. Please edit file", dfaFile1, "for adjustments.")
+                    sys.exit()
                 if currentState[(y+1)] not in stateNames:
-                     print("ERROR!", currentState[y+1], "is not part of the specified states. Please edit file ", dfaFile1, " for adjustments.")
-                     sys.exit()
+                    print("ERROR!", currentState[y+1], "is not part of the specified states. Please edit file", dfaFile1, "for adjustments.")
+                    sys.exit()
                 statesList[x][currentState[y]] = currentState[(y + 1)]
-        dfa1[stateNames[x]] = statesList[x]
+            dfa1[stateNames[x]] = statesList[x]
+
+except FileNotFoundError:
+    print("ERROR! Could not open file:", dfaFile1)
+    sys.exit()
+except IOError:
+    print("ERROR! An I/O error occurred while opening file:", dfaFile1)
+    sys.exit()
 
 
 
 
 
 dfa2 = {}
-with open(dfaFile2) as f:
-    alphabetLine2 = f.readline()
-    alphabet2 = alphabetLine2.split()
-    states2 = f.readline()
-    statesList2 = states2.split()
-    stateNames2 = statesList2.copy()
-    acceptingState2 = f.readline()
-    accepts2 = acceptingState2.split()
-    for x in range(0, len(statesList2)):
-        line = f.readline()
-        currentState2 = line.split()
-        # make a dictionary for each state first
-        statesList2[x] = {}
-        if len(currentState2) % 2 != 0:
-            print("ERROR! States are declared incorrectly for", dfaFile2, ". Please check comments for correct formatting.")
+
+try:
+    with open(dfaFile2) as f:
+        alphabetLine2 = f.readline()
+        alphabet2 = alphabetLine2.split()
+        states2 = f.readline()
+        statesList2 = states2.split()
+        stateNames2 = statesList2.copy()
+        acceptingState2 = f.readline()
+        accepts2 = acceptingState2.split()
+        
+        if not statesList2:
+            print("ERROR! No states found in", dfaFile2, ". Please check the DFA file format.")
             sys.exit()
-        for y in range(0, len(currentState2),2):
+
+        for x in range(0, len(statesList2)):
+            line = f.readline()
+            currentState2 = line.split()
+            statesList2[x] = {}
+            if len(currentState2) % 2 != 0:
+                print("ERROR! States are declared incorrectly for", dfaFile2, ". Please check comments for correct formatting.")
+                sys.exit()
+            for y in range(0, len(currentState2), 2):
                 if currentState2[y] not in alphabet2:
-                     print("ERROR!", currentState2[y], "is not part of the specified alphabet. Please edit file ", dfaFile2, " for adjustments.")
-                     sys.exit()
+                    print("ERROR!", currentState2[y], "is not part of the specified alphabet. Please edit file", dfaFile2, "for adjustments.")
+                    sys.exit()
                 if currentState2[(y+1)] not in stateNames2:
-                     print("ERROR!", currentState2[y+1], "is not part of the specified states. Please edit file ", dfaFile2, " for adjustments.")
-                     sys.exit()
+                    print("ERROR!", currentState2[y+1], "is not part of the specified states. Please edit file", dfaFile2, "for adjustments.")
+                    sys.exit()
                 statesList2[x][currentState2[y]] = currentState2[(y + 1)]
-        dfa2[stateNames2[x]] = statesList2[x]
+            dfa2[stateNames2[x]] = statesList2[x]
+
+except FileNotFoundError:
+    print("ERROR! Could not open file:", dfaFile2)
+    sys.exit()
+except IOError:
+    print("ERROR! An I/O error occurred while opening file:", dfaFile2)
+    sys.exit()
+
 
 print("DFA1:")
 print(dfa1)
@@ -124,37 +148,3 @@ print("\nStart State:")
 print(product_start)
 print("\nAccepting States:")
 print(product_accepts)
-
-
-# DFA visualization
-# Creating a .dot file that displays the product DFA when uploaded to third-party visualizing tool
-# Using "https://dreampuf.github.io/GraphvizOnline" as our third-party visualization tool
-def createDotFile(product_trans, product_start, product_accepts, filename="product_dfa.dot"):
-    with open(filename, "w") as f:
-
-        # create digraph named DFA
-        f.write("digraph DFA {\n")
-
-        # left to right orientation
-        f.write('    rankdir=LR;\n')
-        
-        # define "start spot"
-        f.write('    start [shape=none, label="start"];\n')
-        # arrow from "start spot" to the actual start state
-        f.write(f'    start -> "{product_start}";\n')
-        
-        # define accepting states using results from product construction above
-        f.write('    node [shape = doublecircle];\n')
-        for state in product_accepts:
-            f.write(f'    "{state}"\n')
-        
-        # define states and transitions using results from product construction above
-        f.write('    node [shape = circle];\n')
-        for state, transitions in product_trans.items():
-            for symbol, next_state in transitions.items():
-                f.write(f'    "{state}" -> "{next_state}" [label = "{symbol}"];\n')
-        f.write("}")
-
-createDotFile(product_trans, product_start, product_accepts)
-print("\nDOT file has been created.\n" \
-"Upload 'product_dfa.dot' to https://dreampuf.github.io/GraphvizOnline to view product DFA.")
