@@ -30,8 +30,8 @@ try:
         stateNames = statesList.copy()
         acceptingState1 = f.readline()
         accepts1 = acceptingState1.split()
-        if not accepts1:#if the third line
-            print("ERROR! DFA2 has no accepting states. Specify at least one accepting state")
+        if not accepts1:#if the third line is blank
+            print("ERROR! DFA1 has no accepting states. Specify at least one accepting state")
             sys.exit()
         for x in range(0, len(statesList)):
             line = f.readline()
